@@ -1,6 +1,5 @@
 var request = require('request')
 var cheerio = require('cheerio')
-var fs = require('fs')
 var prompt = require('prompt')
 
 // set up command line prompt for user input
@@ -50,7 +49,8 @@ prompt.get(schema, function(err, result) {
         });
         // validation
         if (events.length < 2) {
-          console.log("Couldn’t find information for this year!");
+          // red fg color
+          console.log("\u001b[31m" + "Couldn’t find information for this year!" + "\u001b[0m");
           return 1;
         } else {
           // get two random events
@@ -59,9 +59,11 @@ prompt.get(schema, function(err, result) {
           while (r2 == r1) {
             r2 = Math.floor(Math.random() * events.length);
           }
-          console.log("Two events from the year " + year_text + " (date not listed if unknown/NA):");
-          console.log(events[r1]);
-          console.log(events[r2]);
+          // bold
+          console.log("\u001b[1m" + "Two events from the year " + year_text + " (date not listed if unknown/NA):");
+          // unbold
+          console.log("\u001b[0m" + "• " + events[r1]);
+          console.log("• " + events[r2]);
         }
       }
     });
