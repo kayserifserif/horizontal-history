@@ -1,14 +1,15 @@
 {
-  "name": "horizontalhistoryyears",
+  "name": "horizontalhistory",
   "version": "1.0.0",
   "description": "Retrieves two random historical events from a given year.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "author": "Katherine Yang",
   "license": "ISC",
-  "repository": "github:whykatherine/horizontalhistoryyears",
+  "repository": "github:whykatherine/horizontalhistory",
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
     "prompt": "^1.0.0",
