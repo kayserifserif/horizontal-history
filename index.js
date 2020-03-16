@@ -6,7 +6,7 @@ var prompt = require('prompt')
 var schema = {
   properties: {
     year: {
-      description: "Enter a non-zero year (postive for AD/CE, negative for BC/BCE)",
+      description: "Enter a non-zero year (positive for AD/CE, negative for BC/BCE)",
       type: "string",
       pattern: /^-[1-9][0-9]*|[1-9][0-9]*$/,
       message: 'Year must be a non-zero positive or negative integer.',
