@@ -2,20 +2,24 @@
   "name": "horizontalhistory",
   "version": "1.0.0",
   "description": "Retrieves two random historical events from a given year.",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node server/index.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Katherine Yang",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whykatherine/horizontalhistory.git"
+  },
+  "keywords": [],
+  "author": "",
   "license": "ISC",
-  "repository": "github:whykatherine/horizontalhistory",
+  "bugs": {
+    "url": "https://github.com/whykatherine/horizontalhistory/issues"
+  },
+  "homepage": "https://github.com/whykatherine/horizontalhistory#readme",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.3",
+    "cheerio": "*",
     "express": "^4.17.1",
-    "minimist": ">=1.2.2",
-    "prompt": "^1.0.0",
-    "pug": "^2.0.4",
-    "request": "^2.88.0"
+    "node-fetch": "^3.1.0"
   }
 }
