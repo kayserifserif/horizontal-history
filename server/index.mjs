@@ -61,9 +61,6 @@ function parse(body, yearAffixed) {
     r2 = Math.floor(Math.random() * events.length);
   }
 
-  console.log("Two events from the year " + yearAffixed + " (date not listed if unknown/NA):");
-  console.log("• " + events[r1]);
-  console.log("• " + events[r2]);
   let pair = [events[r1], events[r2]];
   return pair;
 }
