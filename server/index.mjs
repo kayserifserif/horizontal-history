@@ -17,7 +17,8 @@ async function getJSON(year) {
 
   let json;
 
-  if (year > 150) {
+  const MIN_UNFORMATTED_YEAR = 150;
+  if (year > MIN_UNFORMATTED_YEAR) {
     const url = `https://en.wikipedia.org/w/api.php?action=parse&page=${year}&format=json`;
     console.log(url);
     let response = await fetch(url);
@@ -37,21 +38,22 @@ async function getJSON(year) {
   }
 
   // handle redirects
+  let cat = json.parse.categories[0]["*"];
   let stub;
-  if (json.parse.categories[0]["*"] === "Redirects_from_unnecessary_disambiguation") {
+  if (cat === "Redirects_from_unnecessary_disambiguation") {
     stub = year;
-  } else if (json.parse.categories[0]["*"] === "Redirects_to_a_decade") {
+  } else if (cat === "Redirects_to_a_decade") {
     let yearPlain = (year * -1) - 1;
     let decade = Math.floor(yearPlain / 10);
     stub = decade + "0s_BC";
-  } else if (json.parse.categories[0]["*"] === "Redirects_to_a_century") {
+  } else if (cat === "Redirects_to_a_century") {
     let yearPlain = (year * -1) - 1;
     let century = Math.floor(yearPlain / 100);
     stub = formatOrdinals(century) + "_century_BC";
   }
   if (stub) {
     const redirectUrl = `https://en.wikipedia.org/w/api.php?action=parse&page=${stub}&format=json`;
-    console.log(redirectUrl);
+    console.log(`Redirecting to ${redirectUrl}`);
     let response = await fetch(redirectUrl);
     json = await response.json();
   }
