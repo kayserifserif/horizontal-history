@@ -7,18 +7,20 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    let randomYear = Math.round(Math.random() * 2000 * (Math.random() > 0.5 ? 1 : -1));
     this.state = {
-      year: randomYear,
+      year: 1,
       events: ["", ""]
     };
 
     this.handleInput = this.handleInput.bind(this);
+    this.randomise = this.randomise.bind(this);
+    this.setYear = this.setYear.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.generate = this.generate.bind(this);
   }
 
   componentDidMount() {
+    this.randomise();
     this.generate();
   }
 
@@ -33,7 +35,8 @@ class App extends Component {
           <YearForm
             year={this.state.year}
             handleInput={this.handleInput}
-            handleSubmit={this.handleSubmit} />
+            handleSubmit={this.handleSubmit}
+            randomise={this.randomise} />
         </header>
       
         <Events
@@ -44,18 +47,31 @@ class App extends Component {
   }
 
   handleInput(e) {
-    e.preventDefault();
+    this.setYear(e.target.value);
+  }
+
+  randomise() {
+    const MIN_YEAR = -2000;
+    const MAX_YEAR = new Date().getFullYear();
+    let year = Math.round(Math.random() * (MAX_YEAR - MIN_YEAR) + MIN_YEAR);
+    this.setYear(year);
+    this.generate();
+  }
+
+  setYear(year) {
     this.setState({
-      year: e.value
+      year: year
     });
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
+  handleSubmit() {
     this.generate();
   }
 
   generate() {
+    this.setState({
+      events: ["", ""]
+    });
     fetch("/api/" + this.state.year)
       .then(res => res.json())
       .then(events => this.setState({
