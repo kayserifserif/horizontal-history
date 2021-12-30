@@ -15,6 +15,7 @@ class App extends Component {
 
     this.state = {
       year: this.getRandomYear(),
+      title: "",
       events: ["", ""]
     };
   }
@@ -38,6 +39,7 @@ class App extends Component {
       
         <Events
           year={this.state.year}
+          title={this.state.title}
           events={this.state.events} />
       </>
     );
@@ -76,10 +78,10 @@ class App extends Component {
 
     fetch("/api/" + this.state.year)
       .then(res => res.json())
-      .then(events => {
-        console.log(events);
+      .then(results => {
+        console.log(results);
 
-        if (!events) {
+        if (results.events.length === 0) {
           this.setState({
             events: []
           });
@@ -87,7 +89,8 @@ class App extends Component {
         }
 
         this.setState({
-          events: events
+          title: results.title,
+          events: results.events
         });
       });
   }

@@ -9,62 +9,101 @@ const app = express();
 app.get("/api/:year", (req, res) => {
   getJSON(req.params.year)
     .then(json => getEvents(json))
-    .then(events => res.json(events));
+    .then(results => res.json(results));
 });
 
 async function getJSON(year) {
-  let yearFormatted;
-  if (year > 0) {
-    yearFormatted = "AD_" + year;
-  } else if (year < 0) {
-    yearFormatted = (year * -1) + "_BC";
+  if (year == 0) return null;
+
+  let json;
+
+  if (year > 150) {
+    const url = `https://en.wikipedia.org/w/api.php?action=parse&page=${year}&format=json`;
+    console.log(url);
+    let response = await fetch(url);
+    json = await response.json();
   } else {
-    return null;
+    // year with BC/AD
+    let yearFormatted;
+    if (year > 0) {
+      yearFormatted = "AD_" + year;
+    } else if (year < 0) {
+      yearFormatted = (year * -1) + "_BC";
+    }
+    const formattedUrl = `https://en.wikipedia.org/w/api.php?action=parse&page=${yearFormatted}&format=json`;
+    console.log(formattedUrl);
+    let response = await fetch(formattedUrl);
+    json = await response.json();
   }
-  console.log(yearFormatted);
 
-  // year with BC/AD
-  const formattedUrl = `https://en.wikipedia.org/w/api.php?action=parse&page=${yearFormatted}&format=json`;
-  console.log(formattedUrl);
-  let response = await fetch(formattedUrl);
-  let json = await response.json();
-
-  // year, plain
-  if (json.parse.templates[0]["*"] === "Template:R from unnecessary disambiguation") {
-    const unformattedUrl = `https://en.wikipedia.org/w/api.php?action=parse&page=${year}&format=json`;
-    console.log(unformattedUrl);
-    let response = await fetch(unformattedUrl);
+  // handle redirects
+  let stub;
+  if (json.parse.categories[0]["*"] === "Redirects_from_unnecessary_disambiguation") {
+    stub = year;
+  } else if (json.parse.categories[0]["*"] === "Redirects_to_a_decade") {
+    let yearPlain = (year * -1) - 1;
+    let decade = Math.floor(yearPlain / 10);
+    stub = decade + "0s_BC";
+  } else if (json.parse.categories[0]["*"] === "Redirects_to_a_century") {
+    let yearPlain = (year * -1) - 1;
+    let century = Math.floor(yearPlain / 100);
+    stub = formatOrdinals(century) + "_century_BC";
+  }
+  if (stub) {
+    const redirectUrl = `https://en.wikipedia.org/w/api.php?action=parse&page=${stub}&format=json`;
+    console.log(redirectUrl);
+    let response = await fetch(redirectUrl);
     json = await response.json();
   }
   
   return json;
 }
 
+function formatOrdinals(n) {
+  const pr = new Intl.PluralRules("en-US", { type: "ordinal" });
+  const suffixes = new Map([
+    ["one", "st"],
+    ["two", "nd"],
+    ["few", "rd"],
+    ["other", "th"]
+  ]);
+  const rule = pr.select(n);
+  const suffix = suffixes.get(rule);
+  return `${n}${suffix}`;
+}
+
 function getEvents(json) {
+  let results = {
+    title: json.parse.title,
+    events: []
+  };
+
   // get html object
   const body = json.parse.text["*"];
   const $ = cheerio.load(body);
-  let events = [];
-  // get list elements of events
+  let eventsList = [];
+  // get list elements of eventsList
   $("div.mw-parser-output > ul li").each(function() {
     // add each event to the list
-    events.push($(this).text().trim());
+    eventsList.push($(this).text().trim());
   });
-  console.log(events);
 
   // validate
-  if (events.length < 2) {
+  if (eventsList.length < 2) {
     console.log("Couldn’t find two events for this year.");
-    return null;
+    return results;
   }
 
   // get two random events
   let pair = ["", ""];
-  pair[0] = getRandomEvent(events);
+  pair[0] = getRandomEvent(eventsList);
   do {
-    pair[1] = getRandomEvent(events);
+    pair[1] = getRandomEvent(eventsList);
   } while (pair[1] === pair[0]);
-  return pair;
+  
+  results.events = pair;
+  
+  return results;
 }
 
 function getRandomEvent(events) {
