@@ -72,12 +72,21 @@ class App extends Component {
     this.setState({
       events: ["", ""]
     });
+
     console.log(this.state.year);
+    
     fetch("/api/" + this.state.year)
       .then(res => res.json())
       .then(events => {
         console.log(events);
-        if (!events) return;
+
+        if (!events) {
+          this.setState({
+            events: []
+          });
+          return;
+        }
+
         this.setState({
           events: events
         });

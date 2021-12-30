@@ -36,8 +36,17 @@ header {
 }
 
 .pair {
-  display: grid;
-  grid-template-columns: 50% 50%;
+  display: flex;
   margin: 4em 0;
   gap: 2em;
+}
+
+.pair > p {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+}
+
+.event {
+  width: 50%;
 }
