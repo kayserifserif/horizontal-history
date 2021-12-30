@@ -7,20 +7,19 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      year: 1,
-      events: ["", ""]
-    };
-
-    this.handleInput = this.handleInput.bind(this);
     this.randomise = this.randomise.bind(this);
-    this.setYear = this.setYear.bind(this);
+    this.getRandomYear = this.getRandomYear.bind(this);
+    this.handleInput = this.handleInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.generate = this.generate.bind(this);
+
+    this.state = {
+      year: this.getRandomYear(),
+      events: ["", ""]
+    };
   }
 
   componentDidMount() {
-    this.randomise();
     this.generate();
   }
 
@@ -44,21 +43,24 @@ class App extends Component {
     );
   }
 
-  handleInput(e) {
-    this.setYear(e.target.value);
-  }
-
   randomise() {
-    const MIN_YEAR = -2000;
-    const MAX_YEAR = new Date().getFullYear();
-    let year = Math.round(Math.random() * (MAX_YEAR - MIN_YEAR) + MIN_YEAR);
-    this.setYear(year);
+    this.setState({
+      year: this.getRandomYear()
+    });
     this.generate();
   }
 
-  setYear(year) {
+  getRandomYear() {
+    const MIN_YEAR = -2000;
+    const MAX_YEAR = (new Date()).getFullYear();
+    let year = Math.round(Math.random() * (MAX_YEAR - MIN_YEAR) + MIN_YEAR);
+    return year;
+  }
+
+  handleInput(e) {
+    console.log(e.target.value);
     this.setState({
-      year: year
+      year: e.target.value
     });
   }
 
@@ -70,11 +72,16 @@ class App extends Component {
     this.setState({
       events: ["", ""]
     });
+    console.log(this.state.year);
     fetch("/api/" + this.state.year)
       .then(res => res.json())
-      .then(events => this.setState({
-        events: events
-      }));
+      .then(events => {
+        console.log(events);
+        if (!events) return;
+        this.setState({
+          events: events
+        });
+      });
   }
 }
 

@@ -7,62 +7,69 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 
 app.get("/api/:year", (req, res) => {
-  // res.json({ message: "Hello from server!" });
-
-  let year = req.params.year;
-  let yearAffixed = "";
-  let url = "https://en.wikipedia.org/wiki/";
-  // let url = "https://en.wikipedia.org/w/api.php?action=opensearch&search=";
-  if (year > 0) {
-    yearAffixed = "AD " + year;
-    // url = "https://en.wikipedia.org/wiki/AD_" + year;
-    url += "AD_" + year;
-  } else {
-    yearAffixed = (year * -1) + " BC";
-    // url = "https://en.wikipedia.org/wiki/" + (year * -1) + "_BC";
-    url += (year * -1) + "_BC";
-  }
-
-  console.log(url);
-
-  // try to find the wikipedia page for this year
-  fetch(url)
-    .then(res => res.text())
-    .then(body => {
-      let events = parse(body, yearAffixed);
-      console.log(events);
-      // return events;
-      res.json(events);
-    });
+  getJSON(req.params.year)
+    .then(json => getEvents(json))
+    .then(events => res.json(events));
 });
 
-function parse(body, yearAffixed) {
-  // get html elements
-  let $ = cheerio.load(body);
-  // set up to collect events
+async function getJSON(year) {
+  let yearFormatted;
+  if (year > 0) {
+    yearFormatted = "AD_" + year;
+  } else if (year < 0) {
+    yearFormatted = (year * -1) + "_BC";
+  } else {
+    return null;
+  }
+  console.log(yearFormatted);
+
+  // year with BC/AD
+  const formattedUrl = `https://en.wikipedia.org/w/api.php?action=parse&page=${yearFormatted}&format=json`;
+  console.log(formattedUrl);
+  let response = await fetch(formattedUrl);
+  let json = await response.json();
+
+  // year, plain
+  if (json.parse.templates[0]["*"] === "Template:R from unnecessary disambiguation") {
+    const unformattedUrl = `https://en.wikipedia.org/w/api.php?action=parse&page=${year}&format=json`;
+    console.log(unformattedUrl);
+    let response = await fetch(unformattedUrl);
+    json = await response.json();
+  }
+  
+  return json;
+}
+
+function getEvents(json) {
+  // get html object
+  const body = json.parse.text["*"];
+  const $ = cheerio.load(body);
   let events = [];
   // get list elements of events
-  $("div.mw-parser-output > ul li").each(function(index) {
-    // add event to the list
+  $("div.mw-parser-output > ul li").each(function() {
+    // add each event to the list
     events.push($(this).text().trim());
   });
+  console.log(events);
 
-  // validation
+  // validate
   if (events.length < 2) {
-    // red fg color
-    console.log("Couldn’t find information for this year!");
-    return;
+    console.log("Couldn’t find two events for this year.");
+    return null;
   }
 
   // get two random events
-  let r1 = Math.floor(Math.random() * events.length);
-  let r2 = r1;
-  while (r2 === r1) {
-    r2 = Math.floor(Math.random() * events.length);
-  }
-
-  let pair = [events[r1], events[r2]];
+  let pair = ["", ""];
+  pair[0] = getRandomEvent(events);
+  do {
+    pair[1] = getRandomEvent(events);
+  } while (pair[1] === pair[0]);
   return pair;
+}
+
+function getRandomEvent(events) {
+  let event = events[Math.floor(Math.random() * events.length)];
+  return event;
 }
 
 app.listen(PORT, () => {
