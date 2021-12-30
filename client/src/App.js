@@ -44,16 +44,17 @@ class App extends Component {
   }
 
   randomise() {
+    let newYear = this.getRandomYear();
     this.setState({
-      year: this.getRandomYear()
-    });
-    this.generate();
+      year: newYear
+    }, this.generate);
   }
 
   getRandomYear() {
     const MIN_YEAR = -3000;
     const MAX_YEAR = (new Date()).getFullYear();
     let year = Math.round(Math.random() * (MAX_YEAR - MIN_YEAR) + MIN_YEAR);
+    console.log(year);
     return year;
   }
 
@@ -72,8 +73,6 @@ class App extends Component {
     this.setState({
       events: ["", ""]
     });
-
-    console.log(this.state.year);
 
     fetch("/api/" + this.state.year)
       .then(res => res.json())
