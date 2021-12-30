@@ -1,8 +1,16 @@
 function YearForm(props) {
   return (
     <form onSubmit={props.handleSubmit}>
-      <input type="number" name="yearInput" id="nameInput" value={props.year} onChange={props.handleInput} />
-      <button type="submit" id="submitBtn">Generate</button>
+      <input
+        type="range" min="-2000" max="2000" step="1"
+        name="yearInput" id="nameInput"
+        value={props.year}
+        onChange={props.handleInput}
+        onMouseUp={props.handleSubmit} />
+      <button
+        type="button" id="randomBtn"
+        onClick={props.randomise}>
+          Randomise</button>
     </form>
   );
 }
