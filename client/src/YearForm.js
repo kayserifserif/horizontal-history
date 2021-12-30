@@ -6,7 +6,8 @@ function YearForm(props) {
         name="yearInput" id="nameInput"
         value={props.year}
         onChange={props.handleInput}
-        onMouseUp={props.handleSubmit} />
+        onMouseUp={props.handleSubmit}
+        onTouchEnd={props.handleSubmit} />
       <button
         type="button" id="randomBtn"
         onClick={props.randomise}>
