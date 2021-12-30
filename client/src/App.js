@@ -30,8 +30,6 @@ class App extends Component {
         <header>
           <h1>Horizontal History</h1>
 
-          <p>Enter a non-zero year (positive for AD/CE, negative for BC/BCE).</p>
-
           <YearForm
             year={this.state.year}
             handleInput={this.handleInput}
