@@ -3,7 +3,7 @@ function YearForm(props) {
     <form onSubmit={props.handleSubmit}>
       <input
         type="range" min="-2000" max="2000" step="1"
-        name="yearInput" id="nameInput"
+        name="yearInput" id="yearInput"
         value={props.year}
         onChange={props.handleInput}
         onMouseUp={props.handleSubmit}

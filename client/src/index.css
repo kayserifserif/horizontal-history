@@ -13,9 +13,12 @@ code {
 }
 
 header {
-  max-width: 600px;
   margin: 100px auto;
   text-align: center;
+}
+
+#yearInput {
+  width: 100%;
 }
 
 .events {
