@@ -25,7 +25,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <>
         <header>
           <h1>Horizontal History</h1>
 
@@ -39,7 +39,7 @@ class App extends Component {
         <Events
           year={this.state.year}
           events={this.state.events} />
-      </div>
+      </>
     );
   }
 
@@ -51,7 +51,7 @@ class App extends Component {
   }
 
   getRandomYear() {
-    const MIN_YEAR = -2000;
+    const MIN_YEAR = -3000;
     const MAX_YEAR = (new Date()).getFullYear();
     let year = Math.round(Math.random() * (MAX_YEAR - MIN_YEAR) + MIN_YEAR);
     return year;
@@ -74,7 +74,7 @@ class App extends Component {
     });
 
     console.log(this.state.year);
-    
+
     fetch("/api/" + this.state.year)
       .then(res => res.json())
       .then(events => {
