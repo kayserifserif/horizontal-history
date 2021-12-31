@@ -17,9 +17,18 @@ function Events(props) {
     </div>
   }
 
+  let url;
+  if (props.title) {
+    let stub = props.title.replace(" ", "_");
+    url = `https://en.wikipedia.org/wiki/${stub}`;
+  }
+
   return (
     <div className="events">
-      <p className="year">{props.title}</p>
+      <div className="year">
+        <p>{props.title}</p>
+        {url ? <p className="wikiLink"><a href={url}>link</a></p> : ""}
+      </div>
       {pair}
     </div>
   );

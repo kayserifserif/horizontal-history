@@ -26,13 +26,19 @@ header {
   margin: auto;
 }
 
-.events > p {
-  text-align: center;
-}
-
 .year {
   font-size: 2em;
   font-weight: bold;
+  text-align: center;
+}
+
+.year p:first-child {
+  margin: 0;
+}
+
+.wikiLink {
+  font-size: 1rem;
+  font-weight: normal;
 }
 
 .pair {
