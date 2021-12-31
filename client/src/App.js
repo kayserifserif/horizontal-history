@@ -16,7 +16,7 @@ class App extends Component {
     this.state = {
       year: this.getRandomYear(),
       title: "",
-      events: ["", ""]
+      pair: [{}, {}]
     };
   }
 
@@ -40,7 +40,7 @@ class App extends Component {
         <Events
           year={this.state.year}
           title={this.state.title}
-          events={this.state.events} />
+          pair={this.state.pair} />
       </>
     );
   }
@@ -72,8 +72,9 @@ class App extends Component {
   }
 
   generate() {
+    // loading
     this.setState({
-      events: ["", ""]
+      pair: [{}, {}]
     });
 
     fetch("/api/" + this.state.year)
@@ -81,16 +82,17 @@ class App extends Component {
       .then(results => {
         console.log(results);
 
-        if (results.events.length === 0) {
+        if (results.pair.length === 0) {
+          // no results
           this.setState({
-            events: []
+            pair: []
           });
           return;
         }
 
         this.setState({
           title: results.title,
-          events: results.events
+          pair: results.pair
         });
       });
   }

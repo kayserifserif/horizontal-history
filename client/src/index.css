@@ -50,3 +50,16 @@ header {
 .event {
   width: 50%;
 }
+
+.headings {
+  text-transform: lowercase;
+  font-variant: small-caps;
+  display: inline-block;
+  margin-right: 0.5em;
+  font-weight: bold;
+  color: #757575;
+}
+
+.heading:not(:last-of-type)::after {
+  content: " — ";
+}

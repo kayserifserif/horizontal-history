@@ -38,18 +38,22 @@ async function getJSON(year) {
   }
 
   // handle redirects
-  let cat = json.parse.categories[0]["*"];
   let stub;
-  if (cat === "Redirects_from_unnecessary_disambiguation") {
-    stub = year;
-  } else if (cat === "Redirects_to_a_decade") {
-    let yearPlain = (year * -1) - 1;
-    let decade = Math.floor(yearPlain / 10);
-    stub = decade + "0s_BC";
-  } else if (cat === "Redirects_to_a_century") {
-    let yearPlain = (year * -1) - 1;
-    let century = Math.floor(yearPlain / 100);
-    stub = formatOrdinals(century) + "_century_BC";
+  if (json.parse.categories.length > 0) {
+    let cat = json.parse.categories[0]["*"];
+    if (cat === "Redirects_from_unnecessary_disambiguation") {
+      stub = year;
+    } else if (cat === "Redirects_to_a_decade") {
+      let yearPlain = (year * -1) - 1;
+      let decade = Math.floor(yearPlain / 10);
+      stub = decade + "0s_BC";
+    } else if (cat === "Redirects_to_a_century") {
+      let yearPlain = (year * -1) - 1;
+      let century = Math.floor(yearPlain / 100);
+      stub = formatOrdinals(century) + "_century_BC";
+    }
+  } else {
+    stub = json.parse.links[0]["*"];    
   }
   if (stub) {
     const redirectUrl = `https://en.wikipedia.org/w/api.php?action=parse&page=${stub}&format=json`;
@@ -77,33 +81,75 @@ function formatOrdinals(n) {
 function getEvents(json) {
   let results = {
     title: json.parse.title,
-    events: []
+    pair: []
   };
 
   // get html object
   const body = json.parse.text["*"];
   const $ = cheerio.load(body);
-  let eventsList = [];
-  // get list elements of eventsList
-  $("div.mw-parser-output > ul li").each(function() {
-    // add each event to the list
-    eventsList.push($(this).text().trim());
+  let allEvents = [];
+
+  // get list of events
+  $(".mw-parser-output > ul").each(function() {
+
+    // look for headings
+    let headings = [];
+    let h4, h3, h2;
+    // assume previous element is h4
+    h4 = $(this).prev("h4");
+    if (h4.length > 0) { // previous element is h4
+      let h4text = h4.find(".mw-headline").text().trim();
+      // add h4 to list of headings
+      headings.unshift(h4text);
+      // look for h3 in previous siblings
+      h3 = $(this).prevUntil("h3").prev().last();
+    } else { // previous element is not h4
+      // assume previous element is h3
+      h3 = $(this).prev("h3");
+    }
+    // h2
+    if (h3.length > 0) {
+      let h3text = h3.find(".mw-headline").text().trim();
+      headings.unshift(h3text);
+      h2 = $(this).prevUntil("h2").prev().last();
+    } else {
+      h2 = $(this).prev("h2");
+      if (h2.length === 0) {
+        h2 = $(this).prevUntil("h2").prev().last();
+      }
+    }
+    if (h2.length > 0) {
+      let h2text = h2.find(".mw-headline").text().trim();
+      headings.unshift(h2text);
+    }
+
+    // add each list item
+    $(this).children().each(function() {
+      let event = {
+        headings: headings,
+        text: $(this).text().trim()
+      };
+      if (event.text) {
+        allEvents.push(event);
+      }
+    });
   });
 
   // validate
-  if (eventsList.length < 2) {
+  if (allEvents.length < 2) {
     console.log("Couldn’t find two events for this year.");
     return results;
   }
 
   // get two random events
-  let pair = ["", ""];
-  pair[0] = getRandomEvent(eventsList);
+  let pair = [null, null];
+  pair[0] = getRandomEvent(allEvents);
   do {
-    pair[1] = getRandomEvent(eventsList);
+    pair[1] = getRandomEvent(allEvents);
   } while (pair[1] === pair[0]);
-  
-  results.events = pair;
+  results.pair = pair;
+
+  console.log(results);
   
   return results;
 }
