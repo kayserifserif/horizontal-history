@@ -13,6 +13,11 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.generate = this.generate.bind(this);
 
+    this.YEAR_RANGE = [
+      -3000,
+      (new Date()).getFullYear()
+    ];
+
     this.state = {
       year: this.getRandomYear(),
       title: "",
@@ -22,25 +27,33 @@ class App extends Component {
 
   componentDidMount() {
     this.generate();
+
+
   }
 
   render() {
     return (
       <>
         <header>
-          <h1>Horizontal History</h1>
-
-          <YearForm
-            year={this.state.year}
-            handleInput={this.handleInput}
-            handleSubmit={this.handleSubmit}
-            randomise={this.randomise} />
+          <h1 className="title">Horizontal History</h1>
+          <p>Juxtaposing two historical events from the same year, decade, or history.</p>
         </header>
+
+        <YearForm
+          year={this.state.year}
+          handleInput={this.handleInput}
+          handleSubmit={this.handleSubmit}
+          randomise={this.randomise}
+          YEAR_RANGE={this.YEAR_RANGE} />
       
         <Events
           year={this.state.year}
           title={this.state.title}
           pair={this.state.pair} />
+        
+        <footer>
+          <p>Data is obtained from Wikipedia through the <a href="https://www.mediawiki.org/wiki/API:Main_page">MediaWiki API</a>. Dates use BC/AD in accordance with Wikipedia styles. Created by <a href="https://whykatherine.github.io">Katherine Yang</a>.</p>
+        </footer>
       </>
     );
   }
@@ -53,9 +66,9 @@ class App extends Component {
   }
 
   getRandomYear() {
-    const MIN_YEAR = -3000;
-    const MAX_YEAR = (new Date()).getFullYear();
-    let year = Math.round(Math.random() * (MAX_YEAR - MIN_YEAR) + MIN_YEAR);
+    let min = this.YEAR_RANGE[0];
+    let max = this.YEAR_RANGE[1];
+    let year = Math.round(Math.random() * (max - min) + min);
     console.log(year);
     return year;
   }
