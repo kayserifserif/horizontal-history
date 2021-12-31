@@ -123,15 +123,20 @@ function getEvents(json) {
       headings.unshift(h2text);
     }
 
-    // add each list item
+    // iterate through each list item
     $(this).children().each(function() {
+      // create event object
       let event = {
         headings: headings,
         text: $(this).text().trim()
       };
-      if (event.text) {
-        allEvents.push(event);
-      }
+
+      // checks
+      if (!event.text) return;
+      if (headings[0] === "Bibliography") return;
+
+      // add to list of events
+      allEvents.push(event);
     });
   });
 
