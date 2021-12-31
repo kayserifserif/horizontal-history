@@ -125,6 +125,9 @@ function getEvents(json) {
 
     // iterate through each list item
     $(this).children().each(function() {
+      // remove superscripts
+      $(this).find("sup").remove();
+
       // create event object
       let event = {
         headings: headings,
