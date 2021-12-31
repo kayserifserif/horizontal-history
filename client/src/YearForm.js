@@ -11,7 +11,13 @@ function YearForm(props) {
       <button
         type="button" id="randomBtn"
         onClick={props.randomise}>
-          Randomise</button>
+          Randomise
+        </button>
+      <button
+        type="button" id="refreshBtn"
+        onClick={props.handleSubmit}>
+          Refresh
+        </button>
     </form>
   );
 }
