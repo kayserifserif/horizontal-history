@@ -87,9 +87,9 @@ function getEvents(json) {
   // get html object
   const body = json.parse.text["*"];
   const $ = cheerio.load(body);
-  let allEvents = [];
 
   // get list of events
+  let allEvents = [];
   $(".mw-parser-output > ul").each(function() {
 
     // look for headings
@@ -137,6 +137,8 @@ function getEvents(json) {
       // checks
       if (!event.text) return;
       if (headings[0] === "Bibliography") return;
+      if (headings[0] === "External links") return;
+      if (headings[0] === "References") return;
 
       // add to list of events
       allEvents.push(event);
