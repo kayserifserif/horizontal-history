@@ -1,9 +1,11 @@
 {
   "name": "horizontalhistory",
   "version": "1.0.0",
-  "description": "Retrieves two random historical events from a given year.",
+  "description": "Juxtaposing two historical events from the same year, decade, or history.",
   "scripts": {
-    "start": "node server/index.mjs",
+    "server": "node server/index.mjs",
+    "client": "npm start --prefix client",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,5 +23,8 @@
     "cheerio": "*",
     "express": "^4.17.1",
     "node-fetch": "^3.1.0"
+  },
+  "devDependencies": {
+    "concurrently": "^6.5.1"
   }
 }
