@@ -52,7 +52,7 @@ class App extends Component {
           pair={this.state.pair} />
         
         <footer>
-          <p>Data is obtained from Wikipedia through the <a href="https://www.mediawiki.org/wiki/API:Main_page">MediaWiki API</a>. Dates use BC/AD in accordance with Wikipedia styles. Created by <a href="https://whykatherine.github.io">Katherine Yang</a>.</p>
+          <p><small>Data is obtained from Wikipedia through the <a href="https://www.mediawiki.org/wiki/API:Main_page">MediaWiki API</a>. Dates use BC/AD in accordance with Wikipedia styles. Open sourced on <a href="https://github.com/whykatherine/horizontalhistory">GitHub</a>. Created by <a href="https://whykatherine.github.io">Katherine Yang</a>.</small></p>
         </footer>
       </>
     );
