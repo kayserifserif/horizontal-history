@@ -12,6 +12,8 @@ app.get("/api/:year", (req, res) => {
     .then(results => res.json(results));
 });
 
+const INCLUDE_BIRTHS_DEATHS = false;
+
 async function getJSON(year) {
   if (year == 0) return null;
 
@@ -139,6 +141,7 @@ function getEvents(json) {
       if (headings[0] === "Bibliography") return;
       if (headings[0] === "External links") return;
       if (headings[0] === "References") return;
+      if (!INCLUDE_BIRTHS_DEATHS && event.headings[0] === "Births" || event.headings[0] === "Deaths") return;
 
       // add to list of events
       allEvents.push(event);
