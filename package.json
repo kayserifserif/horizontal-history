@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "description": "Juxtaposing two historical events from the same year, decade, or history.",
   "scripts": {
-    "server": "node server/index.mjs",
-    "client": "npm start --prefix client",
-    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "node server/index.mjs",
+    "build": "cd client && npm install && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -28,5 +27,8 @@
   "engines": {
     "node": "16.x"
   },
-  "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client"
+  "cacheDirectories": [
+    "node_modules",
+    "client/node_modules"
+  ]
 }
