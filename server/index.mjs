@@ -126,6 +126,12 @@ function getEvents(json) {
     }
     if (h2.length > 0) {
       let h2text = h2.find(".mw-headline").text().trim();
+
+      // checks
+      if (!INCLUDE_BIRTHS_DEATHS && h2text === "Births" || h2text === "Deaths") return;
+      if (headings[0] === "Bibliography") return;
+      if (headings[0] === "External links") return;
+      if (headings[0] === "References") return;
       headings.unshift(h2text);
     }
 
@@ -142,10 +148,6 @@ function getEvents(json) {
 
       // checks
       if (!event.text) return;
-      if (headings[0] === "Bibliography") return;
-      if (headings[0] === "External links") return;
-      if (headings[0] === "References") return;
-      if (!INCLUDE_BIRTHS_DEATHS && event.headings[0] === "Births" || event.headings[0] === "Deaths") return;
 
       // add to list of events
       allEvents.push(event);
