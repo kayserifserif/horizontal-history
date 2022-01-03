@@ -36,7 +36,7 @@ class App extends Component {
       <>
         <header>
           <h1 className="title">Horizontal History</h1>
-          <p>Juxtaposing two historical events from the same year, decade, or history.</p>
+          <p>Juxtaposing two historical events from the same year, decade, or century.</p>
         </header>
 
         <YearForm

@@ -1,7 +1,20 @@
 # Horizontal History
 
-## Description
-Retrieves two random historical events from a given year.
+Juxtaposing two historical events from the same year, decade, or century.
+
+## Setup
+
+Development:
+
+```
+npm run dev
+```
+
+Production:
+
+```
+npm start
+```
 
 ## Inspiration
 - [Category: Historical eras](https://en.wikipedia.org/wiki/Category:Historical_eras)
