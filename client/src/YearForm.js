@@ -11,7 +11,7 @@ function YearForm(props) {
       <span className="rangeLabel" id="rangeLabelEnd">{max}</span>
 
       <input
-        type="range" min="-2000" max="2000" step="1"
+        type="range" min={props.YEAR_RANGE[0]} max={props.YEAR_RANGE[1]} step="1"
         name="yearInput" id="yearInput"
         value={props.year}
         onChange={props.handleInput}
