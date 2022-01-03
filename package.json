@@ -5,6 +5,9 @@
   "scripts": {
     "start": "node server/index.mjs",
     "build": "cd client && npm install && npm run build",
+    "server": "node server/index.mjs",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
