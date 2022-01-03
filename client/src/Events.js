@@ -25,9 +25,9 @@ function Events(props) {
 
   return (
     <div className="events">
-      <div className="year">
-        <p>{props.title}</p>
-        {url ? <p className="wikiLink"><a href={url}>link</a></p> : ""}
+      <div className="yearInfo">
+        <div className="year">{props.title}</div>
+        <div className="wikiLink">{url ? <p className="wikiLink"><a href={url}>Wikipedia</a></p> : ""}</div>
       </div>
       {pair}
     </div>

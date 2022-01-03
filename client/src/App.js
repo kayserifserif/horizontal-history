@@ -27,8 +27,6 @@ class App extends Component {
 
   componentDidMount() {
     this.generate();
-
-
   }
 
   render() {
@@ -39,17 +37,21 @@ class App extends Component {
           <p>Juxtaposing two historical events from the same year, decade, or century.</p>
         </header>
 
-        <YearForm
-          year={this.state.year}
-          handleInput={this.handleInput}
-          handleSubmit={this.handleSubmit}
-          randomise={this.randomise}
-          YEAR_RANGE={this.YEAR_RANGE} />
-      
-        <Events
-          year={this.state.year}
-          title={this.state.title}
-          pair={this.state.pair} />
+        <main>
+
+          <YearForm
+            year={this.state.year}
+            handleInput={this.handleInput}
+            handleSubmit={this.handleSubmit}
+            randomise={this.randomise}
+            YEAR_RANGE={this.YEAR_RANGE} />
+        
+          <Events
+            year={this.state.year}
+            title={this.state.title}
+            pair={this.state.pair} />
+            
+        </main>
         
         <footer>
           <p><small>Data is obtained from Wikipedia through the <a href="https://www.mediawiki.org/wiki/API:Main_page">MediaWiki API</a>. Dates use BC/AD in accordance with Wikipedia styles. Open sourced on <a href="https://github.com/whykatherine/horizontalhistory">GitHub</a>. Created by <a href="https://whykatherine.github.io">Katherine Yang</a>.</small></p>
