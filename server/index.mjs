@@ -21,52 +21,38 @@ const INCLUDE_BIRTHS_DEATHS = false;
 async function getJSON(year) {
   if (year == 0) return null;
 
-  let json;
-
   const MIN_UNFORMATTED_YEAR = 150;
-  if (year > MIN_UNFORMATTED_YEAR) {
-    const url = `https://en.wikipedia.org/w/api.php?action=parse&page=${year}&format=json`;
-    console.log(url);
-    let response = await fetch(url);
-    json = await response.json();
-  } else {
+  const MIN_SINGLE_YEAR = 1;
+  const MIN_DECADE_YEAR = -1799;
+
+  let stub;
+
+  if (year >= MIN_UNFORMATTED_YEAR) {
+    // year 150
+    stub = year;
+  } else if (year >= MIN_SINGLE_YEAR) {
     // year with BC/AD
-    let yearFormatted;
     if (year > 0) {
-      yearFormatted = "AD_" + year;
-    } else if (year < 0) {
-      yearFormatted = (year * -1) + "_BC";
+      stub = "AD_" + year;
+    } else {
+      stub = (year * -1) + "_BC";
     }
-    const formattedUrl = `https://en.wikipedia.org/w/api.php?action=parse&page=${yearFormatted}&format=json`;
-    console.log(formattedUrl);
-    let response = await fetch(formattedUrl);
-    json = await response.json();
+  } else if (year >= MIN_DECADE_YEAR) {
+    // 580s BC
+    let yearPlain = (year * -1) - 1;
+    let decade = Math.floor(yearPlain / 10);
+    stub = decade + "0s_BC";
+  } else {
+    // 1790s BC
+    let yearPlain = (year * -1) - 1;
+    let century = Math.floor(yearPlain / 100);
+    stub = formatOrdinals(century) + "_century_BC";
   }
 
-  // handle redirects
-  let stub;
-  if (json.parse.categories.length > 0) {
-    let cat = json.parse.categories[0]["*"];
-    if (cat === "Redirects_from_unnecessary_disambiguation") {
-      stub = year;
-    } else if (cat === "Redirects_to_a_decade") {
-      let yearPlain = (year * -1) - 1;
-      let decade = Math.floor(yearPlain / 10);
-      stub = decade + "0s_BC";
-    } else if (cat === "Redirects_to_a_century") {
-      let yearPlain = (year * -1) - 1;
-      let century = Math.floor(yearPlain / 100);
-      stub = formatOrdinals(century) + "_century_BC";
-    }
-  } else {
-    stub = json.parse.links[0]["*"];    
-  }
-  if (stub) {
-    const redirectUrl = `https://en.wikipedia.org/w/api.php?action=parse&page=${stub}&format=json`;
-    console.log(`Redirecting to ${redirectUrl}`);
-    let response = await fetch(redirectUrl);
-    json = await response.json();
-  }
+  let url = `https://en.wikipedia.org/w/api.php?action=parse&page=${stub}&format=json`;
+  console.log(url);
+  let response = await fetch(url);
+  let json = await response.json();
   
   return json;
 }
@@ -154,13 +140,14 @@ function getYearInfo(json) {
       allEvents.push(event);
     });
   });
+  
+  results.numEvents = allEvents.length;
 
   // validate
   if (allEvents.length < 2) {
     console.log("Couldn’t find two events for this year.");
     return results;
   }
-  results.numEvents = allEvents.length;
 
   // get two random events
   let pair = [null, null];

@@ -98,15 +98,6 @@ class App extends Component {
       .then(res => res.json())
       .then(results => {
         console.log(results);
-
-        if (results.pair.length === 0) {
-          // no results
-          this.setState({
-            pair: []
-          });
-          return;
-        }
-
         this.setState({
           title: results.title,
           pair: results.pair,
