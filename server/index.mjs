@@ -19,7 +19,7 @@ app.get("/api/:year", (req, res) => {
 const INCLUDE_BIRTHS_DEATHS = false;
 
 async function getJSON(year) {
-  if (year == 0) return null;
+  if (year == 0) return {};
 
   const MIN_UNFORMATTED_YEAR = 150;
   const MIN_SINGLE_YEAR = 1;
@@ -38,14 +38,16 @@ async function getJSON(year) {
       stub = (year * -1) + "_BC";
     }
   } else if (year >= MIN_DECADE_YEAR) {
-    // 580s BC
-    let yearPlain = (year * -1) - 1;
-    let decade = Math.floor(yearPlain / 10);
-    stub = decade + "0s_BC";
+    // 500s BC: 509-500
+    // 490s BC: 499-490
+    let decade = Math.floor((year * -1) / 10) * 10;
+    stub = decade + "s_BC";
+    if (decade % 100 === 0 && decade !== 0) {
+      stub += "_(decade)";
+    }
   } else {
-    // 1790s BC
-    let yearPlain = (year * -1) - 1;
-    let century = Math.floor(yearPlain / 100);
+    // 5th century BC: 500-401
+    let century = Math.ceil((year * -1) / 100);
     stub = formatOrdinals(century) + "_century_BC";
   }
 
@@ -53,7 +55,6 @@ async function getJSON(year) {
   console.log(url);
   let response = await fetch(url);
   let json = await response.json();
-  
   return json;
 }
 
@@ -72,10 +73,22 @@ function formatOrdinals(n) {
 
 function getYearInfo(json) {
   let results = {
-    title: json.parse.title,
+    title: "",
     numEvents: 0,
     pair: []
-  };
+  }
+
+  if (!("parse" in json)) {
+    console.log("Invalid query.");
+    return {
+      title: "",
+      numEvents: 0,
+      pair: []
+    };
+  }
+
+  // set title
+  results.title = json.parse.title;
 
   // get html object
   const body = json.parse.text["*"];
@@ -115,10 +128,12 @@ function getYearInfo(json) {
       let h2text = h2.find(".mw-headline").text().trim();
 
       // checks
-      if (!INCLUDE_BIRTHS_DEATHS && h2text === "Births" || h2text === "Deaths") return;
-      if (headings[0] === "Bibliography") return;
-      if (headings[0] === "External links") return;
-      if (headings[0] === "References") return;
+      if (!INCLUDE_BIRTHS_DEATHS && (h2text === "Births" || h2text === "Deaths")) return;
+      if (h2text === "Bibliography") return;
+      if (h2text === "External links") return;
+      if (h2text === "References") return;
+      if (h2text === "See also") return;
+
       headings.unshift(h2text);
     }
 
