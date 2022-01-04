@@ -52,7 +52,7 @@ async function getJSON(year) {
   }
 
   let url = `https://en.wikipedia.org/w/api.php?action=parse&page=${stub}&format=json`;
-  console.log(url);
+  // console.log(url);
   let response = await fetch(url);
   let json = await response.json();
   return json;
@@ -79,7 +79,7 @@ function getYearInfo(json) {
   }
 
   if (!("parse" in json)) {
-    console.log("Invalid query.");
+    // console.log("Invalid query.");
     return {
       title: "",
       numEvents: 0,
@@ -160,7 +160,7 @@ function getYearInfo(json) {
 
   // validate
   if (allEvents.length < 2) {
-    console.log("Couldn’t find two events for this year.");
+    // console.log("Couldn’t find two events for this year.");
     return results;
   }
 
@@ -172,7 +172,7 @@ function getYearInfo(json) {
   } while (pair[1] === pair[0]);
   results.pair = pair;
 
-  console.log(results);
+  // console.log(results);
   
   return results;
 }

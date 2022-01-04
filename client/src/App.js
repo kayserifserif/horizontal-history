@@ -73,12 +73,12 @@ class App extends Component {
     let min = this.YEAR_RANGE[0];
     let max = this.YEAR_RANGE[1];
     let year = Math.round(Math.random() * (max - min) + min);
-    console.log(year);
+    // console.log(year);
     return year;
   }
 
   handleInput(e) {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     this.setState({
       year: e.target.value,
       title: "",
@@ -102,7 +102,7 @@ class App extends Component {
     fetch("/api/" + this.state.year)
       .then(res => res.json())
       .then(results => {
-        console.log(results);
+        // console.log(results);
         this.setState({
           title: results.title,
           pair: results.pair,
