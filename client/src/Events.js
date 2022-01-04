@@ -8,13 +8,14 @@ function Events(props) {
       </div>;
     } else {
       pair = <div className="pair">
-        <p>Loading&hellip;</p>
-      </div>
+        <EventPlaceholder />
+        <EventPlaceholder />
+      </div>;
     }
   } else {
     pair = <div className="pair">
       <p>No events found.</p>
-    </div>
+    </div>;
   }
 
   let url, numEvents;
@@ -51,6 +52,15 @@ function Event(props) {
         <span className="headings">{headings}</span>
         {props.event.text}
       </p>
+    </div>
+  );
+}
+
+function EventPlaceholder() {
+  return (
+    <div class="event">
+      <div class="placeholder"></div>
+      <div class="placeholder"></div>
     </div>
   );
 }
