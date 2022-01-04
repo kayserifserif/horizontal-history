@@ -139,12 +139,14 @@ main {
 
 .yearInfo {
   height: 100%;
+  padding: 2em;
   border-bottom: 1px solid black;
   border-right: none;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 2em;
+  gap: 1em;
+  text-align: center;
 }
   @media (min-width: 800px) {
     .yearInfo {
@@ -156,11 +158,7 @@ main {
 .year {
   font-size: 3.5em;
   font-weight: bold;
-  text-align: center;
-}
-
-.wikiLink {
-  text-align: center;
+  line-height: 1;
 }
 
 .pair {
