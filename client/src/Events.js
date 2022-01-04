@@ -59,9 +59,9 @@ function Event(props) {
 
 function EventPlaceholder() {
   return (
-    <div class="event">
-      <div class="placeholder"></div>
-      <div class="placeholder"></div>
+    <div className="event">
+      <div className="placeholder"></div>
+      <div className="placeholder"></div>
     </div>
   );
 }
