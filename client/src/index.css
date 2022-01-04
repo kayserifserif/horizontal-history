@@ -161,6 +161,11 @@ main {
   line-height: 1;
 }
 
+.numEvents .placeholder {
+  width: 50%;
+  margin: auto;
+}
+
 .pair {
   display: flex;
   flex-direction: column;

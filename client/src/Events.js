@@ -25,7 +25,7 @@ function Events(props) {
     let itemPlural = (props.numEvents === 1 ? "item" : "items");
     numEvents = <div className="numEvents">{props.numEvents} list {itemPlural} on <a href={url}>Wikipedia</a></div>;
   } else {
-    numEvents = <div className="numEvents"></div>;
+    numEvents = <div className="numEvents"><div className="placeholder"></div></div>;
   }
 
   return (
