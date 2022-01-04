@@ -1,7 +1,7 @@
 function Events(props) {
   let pair;
   if (props.pair.length > 0) {
-    if (props.pair[0] && props.pair[1]) {
+    if (Object.keys(props.pair[0]).length !== 0) {
       pair = <div className="pair">
         <Event event={props.pair[0]} />
         <Event event={props.pair[1]} />
