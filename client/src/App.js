@@ -80,7 +80,10 @@ class App extends Component {
   handleInput(e) {
     console.log(e.target.value);
     this.setState({
-      year: e.target.value
+      year: e.target.value,
+      title: "",
+      numEvents: 0,
+      pair: [{}, {}]
     });
   }
 
@@ -91,7 +94,9 @@ class App extends Component {
   generate() {
     // loading
     this.setState({
-      pair: [{}, {}]
+      title: "",
+      pair: [{}, {}],
+      numEvents: 0
     });
 
     fetch("/api/" + this.state.year)

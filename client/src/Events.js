@@ -17,18 +17,20 @@ function Events(props) {
     </div>
   }
 
-  let url;
+  let url, numEvents;
   if (props.title) {
     let stub = props.title.replace(" ", "_");
     url = `https://en.wikipedia.org/wiki/${stub}`;
+    numEvents = <div className="numEvents">{props.numEvents} list items on <a href={url}>Wikipedia</a></div>;
+  } else {
+    numEvents = <div className="numEvents"></div>;
   }
 
   return (
     <div className="events">
       <div className="yearInfo">
-        <div className="year">{props.title}</div>
-        <div className="numEvents">{props.numEvents} list items on {url ? <a href={url}>Wikipedia</a> : ""}</div>
-        <div className="wikiLink"></div>
+        <div className="year">{props.title ? props.title : props.year}</div>
+        {numEvents}
       </div>
       {pair}
     </div>
