@@ -30,6 +30,9 @@ async function getJSON(year) {
   if (year >= MIN_UNFORMATTED_YEAR) {
     // year 150
     stub = year;
+    if (year === 1000) {
+      stub = "AD_" + year;
+    }
   } else if (year >= MIN_SINGLE_YEAR) {
     // year with BC/AD
     if (year > 0) {
