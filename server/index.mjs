@@ -12,7 +12,7 @@ const app = express();
 
 app.get("/api/:year", (req, res) => {
   getJSON(req.params.year)
-    .then(json => getEvents(json))
+    .then(json => getYearInfo(json))
     .then(results => res.json(results));
 });
 
@@ -84,9 +84,10 @@ function formatOrdinals(n) {
   return `${n}${suffix}`;
 }
 
-function getEvents(json) {
+function getYearInfo(json) {
   let results = {
     title: json.parse.title,
+    numEvents: 0,
     pair: []
   };
 
@@ -159,6 +160,7 @@ function getEvents(json) {
     console.log("Couldn’t find two events for this year.");
     return results;
   }
+  results.numEvents = allEvents.length;
 
   // get two random events
   let pair = [null, null];

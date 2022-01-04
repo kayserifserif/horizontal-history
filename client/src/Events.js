@@ -27,7 +27,8 @@ function Events(props) {
     <div className="events">
       <div className="yearInfo">
         <div className="year">{props.title}</div>
-        <div className="wikiLink">{url ? <p className="wikiLink"><a href={url}>Wikipedia</a></p> : ""}</div>
+        <div className="numEvents">{props.numEvents} list items on {url ? <a href={url}>Wikipedia</a> : ""}</div>
+        <div className="wikiLink"></div>
       </div>
       {pair}
     </div>

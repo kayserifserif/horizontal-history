@@ -21,7 +21,8 @@ class App extends Component {
     this.state = {
       year: this.getRandomYear(),
       title: "",
-      pair: [{}, {}]
+      pair: [{}, {}],
+      numEvents: 0
     };
   }
 
@@ -49,7 +50,8 @@ class App extends Component {
           <Events
             year={this.state.year}
             title={this.state.title}
-            pair={this.state.pair} />
+            pair={this.state.pair}
+            numEvents={this.state.numEvents} />
             
         </main>
         
@@ -107,7 +109,8 @@ class App extends Component {
 
         this.setState({
           title: results.title,
-          pair: results.pair
+          pair: results.pair,
+          numEvents: results.numEvents
         });
       });
   }
