@@ -22,7 +22,8 @@ function Events(props) {
   if (props.title) {
     let stub = props.title.replace(" ", "_");
     url = `https://en.wikipedia.org/wiki/${stub}`;
-    numEvents = <div className="numEvents">{props.numEvents} list items on <a href={url}>Wikipedia</a></div>;
+    let itemPlural = (props.numEvents === 1 ? "item" : "items");
+    numEvents = <div className="numEvents">{props.numEvents} list {itemPlural} on <a href={url}>Wikipedia</a></div>;
   } else {
     numEvents = <div className="numEvents"></div>;
   }
