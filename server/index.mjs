@@ -148,7 +148,8 @@ function getYearInfo(json) {
       // create event object
       let event = {
         headings: headings,
-        text: $(this).text().trim()
+        // text: $(this).text().trim()
+        text: $(this).html()
       };
 
       // checks

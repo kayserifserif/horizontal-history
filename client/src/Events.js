@@ -1,3 +1,5 @@
+import parse from 'html-react-parser';
+
 function Events(props) {
   let pair;
   if (props.pair.length > 0) {
@@ -47,11 +49,12 @@ function Event(props) {
       headings.push(headingSpan);
     }
   }
+  let text = parse(props.event.text);
   return (
     <div className="event">
       <p className="eventText">
         <span className="headings">{headings}</span>
-        {props.event.text}
+        { text }
       </p>
     </div>
   );
