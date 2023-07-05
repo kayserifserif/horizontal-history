@@ -56,7 +56,7 @@ class App extends Component {
         </main>
         
         <footer>
-          <p><small>Data is obtained from Wikipedia through the <a href="https://www.mediawiki.org/wiki/API:Main_page">MediaWiki API</a>. Dates use BC/AD in accordance with Wikipedia styles. Open sourced on <a href="https://github.com/whykatherine/horizontalhistory">GitHub</a>. Created by <a href="https://whykatherine.github.io">Katherine Yang</a>.</small></p>
+          <p><small>Data is obtained from Wikipedia through the <a href="https://www.mediawiki.org/wiki/API:Main_page">MediaWiki API</a>. Dates use BC/AD in accordance with Wikipedia styles. Open sourced on <a href="https://github.com/kayserifserif/horizontalhistory">GitHub</a>. Created by <a href="https://kayserifserif.place">Katherine Yang</a>.</small></p>
         </footer>
       </>
     );

@@ -12,15 +12,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/whykatherine/horizontalhistory.git"
+    "url": "git+https://github.com/kayserifserif/horizontalhistory.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/whykatherine/horizontalhistory/issues"
+    "url": "https://github.com/kayserifserif/horizontalhistory/issues"
   },
-  "homepage": "https://github.com/whykatherine/horizontalhistory#readme",
+  "homepage": "https://github.com/kayserifserif/horizontalhistory#readme",
   "dependencies": {
     "cheerio": "*",
     "express": "^4.17.1",
